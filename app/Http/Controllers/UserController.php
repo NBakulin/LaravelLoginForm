@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -13,7 +14,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
-    public function register(Request $request){
+    public function register (Request $request): JsonResponse {
         $validator = Validator::make($request->json()->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -36,12 +37,12 @@ class UserController extends Controller
 
     }
 
-    public function login(Request $request){
+    public function login (Request $request): JsonResponse {
         $credentials = $request->json()->all();
 
         try {
             if (!$token = JWTAuth::attempt($credentials)){
-                return response()->json(['error'=>'invalid Credentials'], 400);
+                return response()->json(['error'=>'Invalid Credentials'], 400);
             }
         } catch (JWTException $e){
             return response()->json(['error'=>'could_not_create_token'], 500);
@@ -51,7 +52,20 @@ class UserController extends Controller
 
     }
 
-    public function profile(){
+    public function isAuthenticated(): JsonResponse
+    {
+        try {
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['token_invalid'], 400);
+            }
+        } catch (\Throwable $t){
+            return response()->json(['token_is_invalid'], 400);
+        }
+
+        return response()->json();
+    }
+
+    public function dashboard(): JsonResponse {
         try {
             if (!$user = JWTAuth::parseToken()->authenticate()){
                 return response()->json(['token_invalid'], 400);
