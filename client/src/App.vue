@@ -1,25 +1,41 @@
 <template>
     <div v-if="signupMode" id="signup" class="text-xl form">
-        <form>
+        <form @submit.prevent="register">
             <h1 class="">
                 Register
             </h1>
                 <label for="userName">User name</label>
                 <input name="userName" v-model="name" placeholder="Nikita" class="w-80">
+                <div>
+                    <p v-for="nameError in nameErrors" :key="nameError" class="text-md text-red">
+                        {{ nameError }}
+                    </p>
+                </div>
 
                 <label for="email">Email</label>
                 <input name="email" v-model="email" placeholder="nk.bakulin@gmail.com" class="w-80">
+                <div>
+                    <p v-for="emailError in emailErrors" :key="emailError" class="text-md text-red">
+                        {{ emailError }}
+                    </p>
+                </div>
 
                 <label for="password">Password</label>
                 <input name="password" v-model="password" placeholder="password" type="password" class="w-80">
-            <button @click="register" class="mt-8 w-80"> Register </button>
+                <div>
+                    <p v-for="passwordError in passwordErrors" :key="passwordError" class="text-md text-red">
+                        {{ passwordError }}
+                    </p>
+                </div>
+
+            <button class="mt-8 w-80"> Register </button>
             <a @click="signupMode = !signupMode" class="pointer text-md">
                 Already registered? Proceed to Login
             </a>
         </form>
     </div>
     <div v-else class="text-xl form">
-        <form>
+        <form @submit.prevent="login">
             <h1 class="">
                 Login
             </h1>
@@ -29,7 +45,7 @@
             <label for="password">Password</label>
             <input name="password" v-model="password" placeholder="password" type="password" class="w-80">
 
-            <button @click="login" class="mt-8 w-80"> Login </button>
+            <button class="mt-8 w-80"> Login </button>
             <a @click="signupMode = !signupMode" class="pointer text-md">
                 You are new? Proceed to Sign Up
             </a>
@@ -42,54 +58,61 @@ export default {
     data() {
         return {
             email: "",
+            emailErrors: [],
             name: "",
+            nameErrors: [],
             password: "",
+            passwordErrors: [],
             signupMode: true,
         };
     },
     methods: {
         async register() {
             const { name, email, password } = this;
-            const res = await fetch(
-                "http://127.0.0.1:8000/api/register",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        name,
-                        password,
-                        email,
-                    })
+
+            const data = await this.$axios.post('/api/register',{
+                name,
+                password,
+                email,
+            }).catch((error) => {
+                    const jsonResponse = JSON.parse(error.response.data);
+                    this.emailErrors = jsonResponse.email;
+                    this.nameErrors = jsonResponse.name;
+                    this.passwordErrors = jsonResponse.password;
+
+                    return Promise.resolve(error)
                 }
             );
-            const data = await res.json();
-            console.log(data);
+
+            console.log(data)
         },
         async login() {
             const { email, password } = this;
-            const res = await fetch(
-                "http://127.0.0.1:8000/api/login",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        password,
-                        email,
-                    })
+
+            const data = await this.$axios.post('/api/login',{
+                password,
+                email,
+            }).catch((error) => {
+                    const jsonResponse = JSON.parse(error.response.data);
+                    this.emailErrors = jsonResponse.email;
+                    this.nameErrors = jsonResponse.name;
+                    this.passwordErrors = jsonResponse.password;
+
+                    return Promise.reject(error)
                 }
             );
-            const data = await res.json();
-            console.log(data);
-        }
+            console.log(data)
+
+        },
     },
 };
 </script>
 
 <style>
+    p {
+        margin-top: 0.25em;
+        margin-bottom: 0;
+    }
     input, label {
         display:block;
     }
@@ -125,6 +148,9 @@ export default {
     .text-md {
         font-size: 1rem;
         line-height: 1.5rem;
+    }
+    .text-red {
+        color: rgb(225 29 72);
     }
     .mt-8 {
         margin-top: 2rem;

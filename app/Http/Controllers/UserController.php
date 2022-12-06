@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Validator;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Exceptions\TokenExpiredException;
-use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 
 class UserController extends Controller
@@ -22,7 +20,7 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
 
@@ -42,10 +40,10 @@ class UserController extends Controller
         $credentials = $request->json()->all();
 
         try {
-            if(! $token = JWTAuth::attempt($credentials)){
+            if (!$token = JWTAuth::attempt($credentials)){
                 return response()->json(['error'=>'invalid Credentials'], 400);
             }
-        }catch (JWTException $e){
+        } catch (JWTException $e){
             return response()->json(['error'=>'could_not_create_token'], 500);
         }
 
@@ -53,17 +51,13 @@ class UserController extends Controller
 
     }
 
-    public function getAuthenticatedUser(){
-        try{
-            if(!$user = JWTAuth::parseToken()->authenticate()){
-                return response()->json(['user_not_found'], 400);
+    public function profile(){
+        try {
+            if (!$user = JWTAuth::parseToken()->authenticate()){
+                return response()->json(['token_invalid'], 400);
             }
-        }catch (TokenExpiredException $e){
-            return response()->json(['token_expired'], $e->getStatusCode());
-        }catch (TokenInvalidException $e){
-            return response()->json(['token_invalid'], $e->getStatusCode());
-        }catch (JWTException $e){
-            return response()->json(['token_absent'], $e->getStatusCode());
+        } catch (\Throwable $t){
+            return response()->json(['token_is_invalid'], 400);
         }
 
         return response()->json(compact('user'));

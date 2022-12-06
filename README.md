@@ -1,6 +1,29 @@
 # A simple registration and login form with Laravel, MySQL and Vue
 ## Backend
 
+### Install composer dependencies
+
+```
+composer install
+```
+
+### Install composer dependencies
+
+```
+copy `.env.example` to the same folder and name it `.env`
+```
+
+### Running the MySQL in Docker
+
+```
+docker-compose up -d
+``` 
+
+### Stopping the MySQL in Docker
+```
+docker-compose down
+``` 
+
 ### Migrate migrations
 
 ```
@@ -13,20 +36,9 @@ php artisan migrate
 php artisan serve
 ```
 
-### Running the MySQL server
-
-```
-docker-compose up -d
-``` 
-to start
-```
-docker-compose down
-``` 
-to stop
-
 ## Client
 
-## Project setup
+### Project setup (inside `client` folder)
 ```
 npm install
 ```
