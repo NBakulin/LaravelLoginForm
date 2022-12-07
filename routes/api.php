@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClockController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,9 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('register',[UserController::class, 'register']);
 Route::post('login',[UserController::class, 'login']);
+Route::get('logout',[UserController::class, 'logout']);
 Route::get('is-authenticated',[UserController::class, 'isAuthenticated']);
-Route::get('clock',[UserController::class, 'getClock']);
-Route::put('clock',[UserController::class, 'updateClock']);
+Route::get('clock',[ClockController::class, 'getClock']);
+Route::put('clock',[ClockController::class, 'updateClock']);
 
 Route::middleware('auth:api')->get('/user', function(Request $request){
     return $request->user();

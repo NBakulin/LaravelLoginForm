@@ -30,3 +30,44 @@ export default {
     },
 };
 </script>
+
+<style>
+button{
+    display:block;
+    width: 100%;
+    height: 1.75rem;
+}
+body {
+    font-family: 'Arial', monospace;
+}
+input {
+    width: 100%;
+    box-sizing: border-box;
+    height: 1.75rem;
+}
+p {
+    margin-top: 0.25em;
+    margin-bottom: 0;
+}
+.pointer {
+    cursor: pointer;
+}
+.form {
+    justify-content: center;
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+.text-xl {
+    font-size: 1.25rem;
+    line-height: 2rem;
+}
+.text-md {
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+.text-red {
+    color: rgb(225 29 72);
+}
+</style>

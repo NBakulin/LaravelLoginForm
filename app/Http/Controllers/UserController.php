@@ -6,6 +6,7 @@ use App\Http\Services\ClocksService;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -66,32 +67,16 @@ class UserController extends Controller
         return response()->json();
     }
 
-    public function getClock(): JsonResponse {
+    public function logout(): JsonResponse {
         try {
-            if (!$user = JWTAuth::parseToken()->authenticate()){
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['token_invalid'], 400);
             }
-        } catch (\Throwable $t) {
+        } catch (\Throwable $t){
             return response()->json(['token_is_invalid'], 400);
         }
 
-        $clock = ClocksService::getClock($user->id);
-
-        return response()->json(compact('clock'));
-    }
-
-    public function updateClock(Request $request): JsonResponse {
-        try {
-            if (!$user = JWTAuth::parseToken()->authenticate()){
-                return response()->json(['token_invalid'], 400);
-            }
-        } catch (\Throwable $t) {
-            return response()->json(['token_is_invalid'], 400);
-        }
-
-        $time = $request->get('time');
-        $clock = ClocksService::updateClock($user->id, $time);
-
-        return response()->json(compact('clock'));
+        Auth::guard('api')->logout();
+        return response()->json();
     }
 }

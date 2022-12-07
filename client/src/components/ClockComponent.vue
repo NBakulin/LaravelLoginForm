@@ -5,6 +5,7 @@
     <div>
         <vue-timepicker format="HH:mm:ss" placeholder="Select Time" v-model="simpleStringValue" class="time-picker"></vue-timepicker>
         <button class="" @click="updateClock"> Update Time </button>
+        <p v-if="showErrorText" class="text-md text-red">Please pick the proper time</p>
     </div>
 </template>
 
@@ -20,6 +21,7 @@
                 time: 0,
                 lastUpdateTimeStamp: 0,
                 simpleStringValue: '14:30:00',
+                showErrorText: false,
             };
         },
         mounted() {
@@ -57,6 +59,7 @@
                 this.lastUpdateTimeStamp = data.data.clock.last_update_timestamp ?? 0;
             },
             async updateClock() {
+                this.showErrorText = false;
                 let config = {
                     headers: {
                         'Authorization': 'Bearer ' + this.$cookies.get('token') ?? '',
@@ -65,17 +68,20 @@
 
                 const dateString = (new Date()).toISOString().split('T')[0] + 'T' + this.simpleStringValue;
                 const timeStamp = Math.floor(new Date(dateString).getTime() / 1000);
-                const data = await this.$axios.put(
-                    '/api/clock',
-                    { 'time': timeStamp },
-                    config
-                ).catch((error) => {
-                        return Promise.resolve(error)
-                    }
-                );
-
-                this.time = data.data.clock.time ?? '';
-                this.lastUpdateTimeStamp = data.data.clock.last_update_timestamp ?? '';
+                if (timeStamp) {
+                    const data = await this.$axios.put(
+                        '/api/clock',
+                        {'time': timeStamp},
+                        config
+                    ).catch((error) => {
+                            return Promise.resolve(error)
+                        }
+                    );
+                    this.time = data.data.clock.time ?? '';
+                    this.lastUpdateTimeStamp = data.data.clock.last_update_timestamp ?? '';
+                } else {
+                    this.showErrorText = true;
+                }
             },
         },
     };
@@ -83,7 +89,6 @@
 
 <style>
     #clock {
-        font-family: 'Arial', monospace;
         text-align: center;
         position: absolute;
         left: 50%;

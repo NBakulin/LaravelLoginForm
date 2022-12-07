@@ -1,36 +1,39 @@
-# A simple registration and login form with Laravel, MySQL and Vue
+# A simple registration and login forms and a dashboard with clocks
+
+What I was using (prerequisites)
+```
+npm - 8.3.1
+php - 7.4.28
+Docker Desktop for Mac
+```
+
 ## Backend
 
-### Install composer dependencies
+1. Install composer dependencies
 
 ```
 composer install
 ```
 
-### Install composer dependencies
+2. Then copy `.env.example` to the same folder and rename it to `.env`
 
-```
-copy `.env.example` to the same folder and name it `.env`
-```
-
-### Running the MySQL in Docker
+3. Run MySQL in Docker
 
 ```
 docker-compose up -d
 ``` 
-
-### Stopping the MySQL in Docker
+to stop MySQL run
 ```
 docker-compose down
 ``` 
 
-### Migrate migrations
+4. Migrate migrations
 
 ```
 php artisan migrate
 ```
 
-### Run the server
+5. Run the server
 
 ```
 php artisan serve
@@ -38,25 +41,19 @@ php artisan serve
 
 ## Client
 
-### Project setup (inside `client` folder)
+6. Go to `client` directory
+```
+cd client
+```
+
+7. Install dependencies
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+8. Build assets and run dev server
 
-### Compiles and minifies for production
 ```
-npm run build
+npm run build && npm run serve
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

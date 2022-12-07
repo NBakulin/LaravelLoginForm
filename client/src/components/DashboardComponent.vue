@@ -1,4 +1,5 @@
 <template>
+    <a @click="logout" class="pointer">Logout</a>
     <div class="text-xl form">
         <clock-component></clock-component>
     </div>
@@ -29,6 +30,22 @@ export default {
             if (data.status === undefined || data.status !== 200) {
                 this.changeMode('login');
             }
+        },
+        async logout() {
+            let config = {
+                headers: {
+                    'Authorization': 'Bearer ' + this.$cookies.get('token') ?? '',
+                }
+            };
+
+            await this.$axios.get('/api/logout', config).catch((error) => {
+                    return Promise.resolve(error)
+                }
+            );
+
+            this.changeMode('login');
+            this.$cookies.remove('token');
+
         },
         changeMode(newMode) {
             this.$emit('modeChanged', newMode)

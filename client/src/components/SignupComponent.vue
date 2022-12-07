@@ -68,7 +68,7 @@
                 );
 
                 if (data.status === 201) {
-                    this.$cookies.set("token", data.data.token, '1d');
+                    this.$cookies.set('token', data.data.token, '1d');
                     this.changeMode('dashboard');
                 }
             },
@@ -81,48 +81,14 @@
 </script>
 
 <style>
-p {
-    margin-top: 0.25em;
-    margin-bottom: 0;
-}
 input, label {
     display:block;
-}
-input {
-    width: 100%;
-    box-sizing: border-box;
-    height: 1.75rem;
 }
 label {
     margin-top: 0.25rem;
 }
-button{
-    display:block;
-    width: 100%;
-    height: 1.75rem;
-}
 label {
     text-align: left !important;
-}
-.form {
-    justify-content: center;
-    display: flex;
-    height: 100%;
-    align-items: center;
-}
-.pointer {
-    cursor: pointer;
-}
-.text-xl {
-    font-size: 1.25rem;
-    line-height: 2rem;
-}
-.text-md {
-    font-size: 1rem;
-    line-height: 1.5rem;
-}
-.text-red {
-    color: rgb(225 29 72);
 }
 .mt-8 {
     margin-top: 2rem;
