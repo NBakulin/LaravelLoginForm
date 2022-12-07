@@ -62,6 +62,10 @@
 </script>
 
 <style>
+body {
+    font-family: 'Arial', monospace;
+}
+
 p {
     margin-top: 0.25em;
     margin-bottom: 0;

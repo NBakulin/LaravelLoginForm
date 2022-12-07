@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\ClocksService;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -65,15 +66,32 @@ class UserController extends Controller
         return response()->json();
     }
 
-    public function dashboard(): JsonResponse {
+    public function getClock(): JsonResponse {
         try {
             if (!$user = JWTAuth::parseToken()->authenticate()){
                 return response()->json(['token_invalid'], 400);
             }
-        } catch (\Throwable $t){
+        } catch (\Throwable $t) {
             return response()->json(['token_is_invalid'], 400);
         }
 
-        return response()->json(compact('user'));
+        $clock = ClocksService::getClock($user->id);
+
+        return response()->json(compact('clock'));
+    }
+
+    public function updateClock(Request $request): JsonResponse {
+        try {
+            if (!$user = JWTAuth::parseToken()->authenticate()){
+                return response()->json(['token_invalid'], 400);
+            }
+        } catch (\Throwable $t) {
+            return response()->json(['token_is_invalid'], 400);
+        }
+
+        $time = $request->get('time');
+        $clock = ClocksService::updateClock($user->id, $time);
+
+        return response()->json(compact('clock'));
     }
 }

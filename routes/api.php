@@ -22,7 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('register',[UserController::class, 'register']);
 Route::post('login',[UserController::class, 'login']);
 Route::get('is-authenticated',[UserController::class, 'isAuthenticated']);
-Route::get('dashboard',[UserController::class, 'dashboard']);
+Route::get('clock',[UserController::class, 'getClock']);
+Route::put('clock',[UserController::class, 'updateClock']);
 
 Route::middleware('auth:api')->get('/user', function(Request $request){
     return $request->user();

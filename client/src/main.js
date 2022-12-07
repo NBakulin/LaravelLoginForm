@@ -6,6 +6,7 @@ import Signup from "@/components/SignupComponent";
 import Axios from 'axios'
 import { createRouter, createWebHistory } from 'vue-router'
 import VueCookies from 'vue-cookies'
+import 'vue3-timepicker/dist/VueTimepicker.css'
 
 const app = createApp(App);
 

@@ -11,7 +11,7 @@ import Dashboard from "@/components/DashboardComponent";
 
 export default {
     name: "App",
-    components: {Dashboard, Signup, Login},
+    components: { Dashboard, Signup, Login },
     data() {
         const allowedModes = ['login', 'signup', 'dashboard'];
         let initialMode = window.location.pathname.slice(1);
