@@ -15,9 +15,7 @@ Docker Desktop for Mac
 composer install
 ```
 
-2. Then copy `.env.example` to the same folder and rename it to `.env`
-
-3. Run MySQL in Docker
+2. Run MySQL in Docker
 
 ```
 docker-compose up -d
@@ -27,19 +25,21 @@ to stop MySQL run
 docker-compose down
 ``` 
 
-4. Migrate migrations
+3. Migrate migrations
 
 ```
 php artisan migrate
 ```
 
-5. Run the server
+4. Run the server
 
 ```
 php artisan serve
 ```
 
 ## Client
+
+5. Create a new terminal tab
 
 6. Go to `client` directory
 ```
